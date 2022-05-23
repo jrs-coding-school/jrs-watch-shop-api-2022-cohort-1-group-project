@@ -1,7 +1,7 @@
 DROP SCHEMA IF EXISTS `watches`;
 CREATE SCHEMA `watches`;
 
-CREATE TABLE `watches`.`product` (
+CREATE TABLE `watches`.`products` (
     `id` VARCHAR(50) NOT NULL UNIQUE,
     `name` VARCHAR(255) NOT NULL,
     `price` FLOAT NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE `watches`.`product` (
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `watches`.`user` (
+CREATE TABLE `watches`.`users` (
     `id` VARCHAR(50) NOT NULL UNIQUE,
     `email` VARCHAR(255) NOT NULL UNIQUE,
     `password` VARCHAR(255) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE `watches`.`user` (
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `watches`.`transaction` (
+CREATE TABLE `watches`.`transactions` (
     `id` VARCHAR(50) NOT NULL UNIQUE,
     `customer_id` VARCHAR(50) NOT NULL,
     `date` DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -38,10 +38,10 @@ CREATE TABLE `watches`.`transaction` (
 
     PRIMARY KEY (`id`),
     FOREIGN KEY (`customer_id`) 
-        REFERENCES `user`(`id`)
+        REFERENCES `users`(`id`)
 );
 
-CREATE TABLE `watches`.`purchased_item` (
+CREATE TABLE `watches`.`purchased_items` (
     `id` VARCHAR(50) NOT NULL UNIQUE,
     `product_id` VARCHAR(50) NOT NULL,
     `quantity` INT NOT NULL,
@@ -50,12 +50,12 @@ CREATE TABLE `watches`.`purchased_item` (
 
     PRIMARY KEY (`id`),
     FOREIGN KEY (`product_id`) 
-        REFERENCES `product`(`id`),
+        REFERENCES `products`(`id`),
     FOREIGN KEY (`transaction_id`) 
-        REFERENCES `transaction`(`id`)
+        REFERENCES `transactions`(`id`)
 );
 
-INSERT INTO `watches`.`product` 
+INSERT INTO `watches`.`products` 
     (id, `name`, price, brand, color, style)
 VALUES
     ('1234-abcd-5678-ef90', 'G-SHOCK 123 abc', 1.99, 'G-SHOCK', 'red', 'wrist');
