@@ -2,7 +2,7 @@ DROP SCHEMA IF EXISTS `watches`;
 
 CREATE SCHEMA `watches`;
 
-CREATE TABLE `watches`.`product` (
+CREATE TABLE `watches`.`products` (
     `id` VARCHAR(50) NOT NULL UNIQUE,
     `name` VARCHAR(255) NOT NULL,
     `price` FLOAT NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE `watches`.`product` (
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `watches`.`user` (
+CREATE TABLE `watches`.`users` (
     `id` VARCHAR(50) NOT NULL UNIQUE,
     `email` VARCHAR(255) NOT NULL UNIQUE,
     `password` VARCHAR(255) NOT NULL,
@@ -30,28 +30,28 @@ CREATE TABLE `watches`.`user` (
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `watches`.`transaction` (
+CREATE TABLE `watches`.`transactions` (
     `id` VARCHAR(50) NOT NULL UNIQUE,
     `customer_id` VARCHAR(50) NOT NULL,
     `date` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `total` FLOAT NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`customer_id`) REFERENCES `user`(`id`)
+    FOREIGN KEY (`customer_id`) REFERENCES `users`(`id`)
 );
 
-CREATE TABLE `watches`.`purchased_item` (
+CREATE TABLE `watches`.`purchased_items` (
     `id` VARCHAR(50) NOT NULL UNIQUE,
     `product_id` VARCHAR(50) NOT NULL,
     `quantity` INT NOT NULL,
     `transaction_id` VARCHAR(255) NOT NULL,
     `total` FLOAT NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`product_id`) REFERENCES `product`(`id`),
-    FOREIGN KEY (`transaction_id`) REFERENCES `transaction`(`id`)
+    FOREIGN KEY (`product_id`) REFERENCES `products`(`id`),
+    FOREIGN KEY (`transaction_id`) REFERENCES `transactions`(`id`)
 );
 
 INSERT INTO
-    `watches`.`product` (
+    `watches`.`products` (
         id,
         `name`,
         price,
@@ -62,6 +62,206 @@ INSERT INTO
         image
     )
 VALUES
+    (
+        uuid(),
+        'G7900A-4',
+        99.00,
+        'Casio',
+        'red',
+        'digital',
+        'G-SHOCK 7900 SERIES',
+        'https://www.casio.com/content/dam/casio/product-info/locales/us/en/timepiece/product/watch/G/G7/G79/G-7900A-4/assets/G-7900A-4_Seq1.png.transform/main-visual-pc/image.png'
+    ),
+    (
+        uuid(),
+        'GA110ALIFE21-8A',
+        180.00,
+        'Casio',
+        'white',
+        'analog',
+        'G-SHOCK LIMITED',
+        'https://www.casio.com/content/dam/casio/product-info/locales/us/en/timepiece/product/watch/G/GA/GA1/ga110alife21-8a/assets/ALifeSoldier.png.transform/main-visual-pc/image.png'
+    ),
+    (
+        uuid(),
+        'MTGB3000BD12',
+        1050.00,
+        'Casio',
+        'black',
+        'analog',
+        'G-SHOCK MTGB3000 Series',
+        'https://www.casio.com/content/dam/casio/product-info/locales/us/en/timepiece/product/watch/M/MT/MTG/mtg-b3000bd-1a2/assets/MTG-B3000BD-1A2_JF.png.transform/main-visual-pc/image.png'
+    ),
+    (
+        uuid(),
+        'GRB200-1B',
+        350.00,
+        'Casio',
+        'black',
+        'analog',
+        'G-SHOCK GRAVITYMASTER',
+        'https://www.casio.com/content/dam/casio/product-info/locales/us/en/timepiece/product/watch/G/GR/GRB/gr-b200-1b/assets/GR-B200-1B.png.transform/main-visual-pc/image.png'
+    ),
+    (
+        uuid(),
+        'GA2100-1A3',
+        99.00,
+        'Casio',
+        'black',
+        'analog',
+        'G-SHOCK Neon Accent Series',
+        'https://www.casio.com/content/dam/casio/product-info/locales/us/en/timepiece/product/watch/G/GA/GA2/ga-2100-1a3/assets/GA-2100-1A3.png.transform/main-visual-pc/image.png'
+    ),
+    (
+        uuid(),
+        'GA700CA-5A',
+        99.00,
+        'Casio',
+        'brown',
+        'analog',
+        'G-SHOCK GA-700 SERIES',
+        'https://www.casio.com/content/dam/casio/product-info/locales/us/en/timepiece/product/watch/G/GA/GA7/ga-700ca-5a/assets/GA-700CA-5A.png.transform/main-visual-pc/image.png'
+    ),
+    (
+        uuid(),
+        'GM110G-1A9',
+        230.00,
+        'Casio',
+        'white',
+        'analog',
+        'G-SHOCK GM-110 SERIES',
+        'https://www.casio.com/content/dam/casio/product-info/locales/us/en/timepiece/product/watch/G/GM/GM1/GM-110G-1A9/assets/GM-110G-1A9_Seq04.jpg.transform/main-visual-pc/image.jpg'
+    ),
+    (
+        uuid(),
+        'GA2200M-1A',
+        130.00,
+        'Casio',
+        'black',
+        'analog',
+        'G-SHOCK GA-2200 Series',
+        'https://www.casio.com/content/dam/casio/product-info/locales/us/en/timepiece/product/watch/G/GA/GA2/ga-2200m-1a/assets/GA-2200M-1A.png.transform/main-visual-pc/image.png'
+    ),
+    (
+        uuid(),
+        'GA2200GC-7A',
+        150.00,
+        'Casio',
+        'white',
+        'analog',
+        'G-SHOCK GA-2200 Series',
+        'https://www.casio.com/content/dam/casio/product-info/locales/us/en/timepiece/product/watch/G/GA/GA2/ga-2200gc-7a/assets/GA-2200GC-7A.png.transform/main-visual-pc/image.png'
+    ),
+    (
+        uuid(),
+        'GA-700DC-1A',
+        88.00,
+        'Casio',
+        'black',
+        'analog',
+        'G-SHOCK GA-700 SERIES',
+        'https://www.casio.com/content/dam/casio/product-info/locales/us/en/timepiece/product/watch/G/GA/GA7/GA-700DC-1A/assets/GA-700DC-1A_Seq1.png.transform/main-visual-pc/image.png'
+    ),
+    (
+        uuid(),
+        'Dayliner Three-Hand Teak Leather Watch',
+        140.00,
+        'Fossil',
+        'green',
+        'analog',
+        'DAYLINER',
+        'https://fossil.scene7.com/is/image/FossilPartners/FS5925_main?$sfcc_fos_large$'
+    ),
+    (
+        uuid(),
+        'Bronson Chronograph Black Stainless Steel Watch',
+        140.00,
+        'Fossil',
+        'black',
+        'analog',
+        '44MM BRONSON',
+        'https://fossil.scene7.com/is/image/FossilPartners/FS5851_main?$sfcc_fos_large$'
+    ),
+    (
+        uuid(),
+        'Gen 6 Smartwatch Black Stainless Steel Mesh',
+        319.00,
+        'Fossil',
+        'black',
+        'smartwatch',
+        'GEN 6 SMARTWATCH',
+        'https://fossil.scene7.com/is/image/FossilPartners/FTW4066_main?$sfcc_fos_large$'
+    ),
+    (
+        uuid(),
+        'Hybrid Smartwatch HR Neutra Black Stainless Steel',
+        219.00,
+        'Fossil',
+        'black',
+        'analog',
+        'EUTRA HYBRID HR SMARTWATCH',
+        'https://fossil.scene7.com/is/image/FossilPartners/FTW7027_main?$sfcc_fos_large$'
+    ),
+    (
+        uuid(),
+        'Everett Automatic Black Eco Leather Watch',
+        168.00,
+        'Fossil',
+        'gold',
+        'mechanical',
+        'EVERETT',
+        'https://fossil.scene7.com/is/image/FossilPartners/ME3208_main?$sfcc_fos_large$'
+    ),
+    (
+        uuid(),
+        'Inscription Automatic Smoke Stainless Steel Watch',
+        130.00,
+        'Fossil',
+        'black',
+        'mechanical',
+        'INSCRIPTION',
+        'https://fossil.scene7.com/is/image/FossilPartners/BQ2574_main?$sfcc_fos_large$'
+    ),
+    (
+        uuid(),
+        'Bronson Automatic Brown Eco Leather Watch',
+        260.00,
+        'Fossil',
+        'brown',
+        'mechanical',
+        'BRONSON',
+        'https://fossil.scene7.com/is/image/FossilPartners/ME3219_main?$sfcc_fos_large$'
+    ),
+    (
+        uuid(),
+        'Minimalist Three-Hand Brown Leather Watch',
+        130.00,
+        'Fossil',
+        'brown',
+        'analog',
+        'THE MINIMALIST 3H',
+        'https://fossil.scene7.com/is/image/FossilPartners/FS5551_main?$sfcc_fos_large$'
+    ),
+    (
+        uuid(),
+        'Sonic the Hedgehog Quartz Casual Watch',
+        15.00,
+        'Sonic the Hedgehog',
+        'blue',
+        'digital',
+        'Model: SNC4016',
+        'https://m.media-amazon.com/images/I/91+QI4Pu5TL._AC_UX679_.jpg'
+    ),
+    (
+        uuid(),
+        'Accutime Kids Batman Digital Quartz Watch',
+        12.23,
+        'Accutime',
+        'blue',
+        'digital',
+        'BAT4405SR',
+        'https://m.media-amazon.com/images/I/91ymOw5SDSL._AC_UY879_.jpg'
+    ),
     (
         uuid(),
         'Grateful Dead Time Teller',
@@ -142,8 +342,7 @@ VALUES
         'Pre-programmed tide information for 550 global beaches, including high/low tide time and height, as well as sunrise/sunset. Also features date, chronograph timer, three alarms, backlight, and our patented Locking Looper™.',
         'https://cdn.shopify.com/s/files/1/0541/0272/0705/products/A1307-1543-view1_1000x.png?v=1639584587'
     ),
-
-(
+    (
         uuid(),
         'Base Tide Pro',
         150.00,
@@ -153,7 +352,6 @@ VALUES
         'Pre-programmed tide information for 550 global beaches, including high/low tide time and height, as well as sunrise/sunset. Also features date, chronograph timer, three alarms, backlight, and our patented Locking Looper™.',
         'https://cdn.shopify.com/s/files/1/0541/0272/0705/products/A1307-1543-view1_1000x.png?v=1639584587'
     ),
-
     (
         uuid(),
         'Siren Stainless Steel',
@@ -171,66 +369,56 @@ VALUES
         'Nixon',
         'pink',
         'digital',
-        'Pre-programmed with tide information for 550 beaches around the world with current, future, and past tide time with height coefficient, as well as sunrise/sunset data. A water-channeling pattern on the inside of the band keeps moisture from getting trapped against your skin.',
+        'Pre-programmed with tide information for 550 beaches around the world with current, future, and past tide time with height coefficient, as well as sunrise/sunset data.',
         'https://cdn.shopify.com/s/files/1/0541/0272/0705/products/A1310-2531-view1_1000x.png?v=1639584601'
+    ),
+    (
+        uuid(),
+        'Air-King ',
+        7400.00,
+        'Rolex',
+        'white gold',
+        'analog',
+        'The Oyster Perpetual Air-King pays tribute to the pioneers of flight and the Oyster’s roles in the epic story of aviation.',
+        'https://content.rolex.com/dam/2022/upright-bba-with-shadow/m126900-0001.png?imwidth=840'
+    ),
+    (
+        uuid(),
+        'GMT Master 2 ',
+        10300.00,
+        'Rolex',
+        'silver',
+        'analog',
+        'Heir to the original model, the GMT-Master II was unveiled in 1982, with a new movement ensuring ease of use. Its combination of peerless functionality, robustness and instantly recognizable aesthetics has attracted a wider audience of world travellers.',
+        'https://content.rolex.com/dam/2022/upright-bba-with-shadow/m126710blnr-0002.png?imwidth=840'
+    ),
+    (
+        uuid(),
+        'Yacht Master 42 ',
+        29650.00,
+        'Rolex',
+        'black',
+        'analog',
+        'As comfortable at sea as aboard a sailboat, the Yacht-Master combines character and performance.',
+        'https://content.rolex.com/dam/2022/upright-bba-with-shadow/m226659-0002.png?imwidth=840'
+    ),
+    (
+        uuid(),
+        'Day Date 40 ',
+        40350.00,
+        'Rolex',
+        'white gold',
+        'analog',
+        'The exceptional precision, reliability, legibility and presence of this prestigious model has made it the ultimate status watch.',
+        'https://content.rolex.com/dam/2022/upright-bba-with-shadow/m228239-0033.png?imwidth=840'
+    ),
+    (
+        uuid(),
+        'Celleni Moon Phase ',
+        26750.00,
+        'Rolex',
+        'brown',
+        'analog',
+        'The Cellini Moonphase displays the date around the circumference of the dial, via a centre hand with a crescent moon at its tip.',
+        'https://content.rolex.com/dam/2022/upright-bba-with-shadow/m50535-0002.png?imwidth=840'
     );
-
-(
-    uuid(),
-    'Air-King ',
-    7400.00,
-    'Rolex',
-    'white gold',
-    'analog',
-    'The Oyster Perpetual Air-King pays tribute to the pioneers of flight and the Oyster’s roles in the epic story of aviation.',
-    'https://content.rolex.com/dam/2022/upright-bba-with-shadow/m126900-0001.png?imwidth=840'
-);
-
-(
-    uuid(),
-    'GMT Master 2 ',
-    10300.00,
-    'Rolex',
-    'silver',
-    'analog',
-    'Heir to the original model, the GMT-Master II was unveiled in 1982, with a new movement ensuring ease of use. Its combination of peerless functionality, robustness and instantly recognizable aesthetics has attracted a wider audience of world travellers.',
-    'https://content.rolex.com/dam/2022/upright-bba-with-shadow/m126710blnr-0002.png?imwidth=840'
-);
-
-(
-    uuid(),
-    'Yacht Master 42 ',
-    29650.00,
-    'Rolex',
-    'black',
-    'analog',
-    'As comfortable at sea as aboard a sailboat, the Yacht-Master combines character and performance.',
-    'https://content.rolex.com/dam/2022/upright-bba-with-shadow/m226659-0002.png?imwidth=840'
-);
-
-(
-    uuid(),
-    'Day Date 40 ',
-    40350.00,
-    'Rolex',
-    'white gold',
-    'analog',
-    'The exceptional precision, reliability, legibility and presence of this prestigious model has made it the ultimate status watch.',
-    'https://content.rolex.com/dam/2022/upright-bba-with-shadow/m228239-0033.png?imwidth=840'
-);
-
-(
-    uuid(),
-    'Celleni Moon Phase ',
-    26750.00,
-    'Rolex',
-    'brown',
-    'analog',
-    'The Cellini Moonphase displays the date around the circumference of the dial, via a centre hand with a crescent moon at its tip. This model is driven by a self-winding mechanical movement entirely manufactured by Rolex, whose patented moonphase module is astronomically accurate for 122 years.',
-    'https://content.rolex.com/dam/2022/upright-bba-with-shadow/m50535-0002.png?imwidth=840'
-);
-
-(
-    uuid(),
-    
-);
