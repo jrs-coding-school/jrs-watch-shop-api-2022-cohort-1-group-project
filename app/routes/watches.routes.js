@@ -2,22 +2,13 @@ module.exports = (app) => {
 
     const watches = require('../controllers/watches.controller');
 
-    // router = ...router...
 
-    app.get('/api/watches', watches.getAllPalettes);
-    app.get('/api/watches/:id', watches.getPaletteById);
-    app.get('/api/watches/user/:userId', watches.getPalettesByUser);
-    app.get('/api/watches/color/', watches.getPalettesByHexColor);
-    app.get('/api/watches/style/', watches.getPalettesByTitle);
+    app.get('/api/watches', watches.getAllWatches);
+    app.get('/api/watches/:id', watches.getWatchesById);
+    app.get('/api/watches/rating/:rating', watches.getWatchesByRating);
+    app.get('/api/watches/color/:color', watches.getWatchesByColor);
+    app.get('/api/watches/style/:style', watches.getWatchesByStyle);
+    app.get('/api/watches/brand/:brand', watches.getWatchesByBrand);
+    app.get('/api/watches/search', watches.getWatchesByQuery);
 
-    app.post('/api/watches', watches.createNewPalette);
-
-// ALl Put requests are for the cart and we will get to it if we can! :)
-
-    app.put('/api/watches/:id', watches.updatePaletteById);
-    // app.put('/api/watches/title/:title', watches.updateTitle);
-
-    app.delete('/api/watches/:id', watches.deletePaletteById);
-
-    // app.use router
 }
