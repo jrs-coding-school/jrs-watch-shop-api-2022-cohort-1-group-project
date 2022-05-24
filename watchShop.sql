@@ -32,11 +32,11 @@ CREATE TABLE `watches`.`users` (
 
 CREATE TABLE `watches`.`transactions` (
     `id` VARCHAR(50) NOT NULL UNIQUE,
-    `customer_id` VARCHAR(50) NOT NULL,
+    `customer_id` VARCHAR(50),
     `date` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `total` FLOAT NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`customer_id`) REFERENCES `users`(`id`)
+    FOREIGN KEY (`customer_id`) REFERENCES `users`(`id`) ON DELETE SET NULL
 );
 
 CREATE TABLE `watches`.`purchased_items` (
@@ -49,6 +49,28 @@ CREATE TABLE `watches`.`purchased_items` (
     FOREIGN KEY (`product_id`) REFERENCES `products`(`id`),
     FOREIGN KEY (`transaction_id`) REFERENCES `transactions`(`id`)
 );
+
+DROP TABLE IF EXISTS `watches`.`cart_items`;
+
+CREATE TABLE `watches`.`cart_items` (
+    `id` INT NOT NULL UNIQUE AUTO_INCREMENT,
+    `customer_id` VARCHAR(50) NOT NULL,
+    `product_id` VARCHAR(50) NOT NULL,
+    `quantity` INT NOT NULL,
+    `total` FLOAT NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`product_id`) REFERENCES `products`(`id`),
+    FOREIGN KEY (`customer_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+);
+
+INSERT INTO
+    `watches`.`users` (`id`, `email`, `password`)
+VALUES
+    (
+        'e9fbc1e7-dae5-4063-85f6-d0768d35b48f',
+        'testing@testing.com',
+        'pass'
+    );
 
 INSERT INTO
     `watches`.`products` (
@@ -63,7 +85,7 @@ INSERT INTO
     )
 VALUES
     (
-        uuid(),
+        '7b16e394-daaf-11ec-bc93-f7f5e59d600a',
         'G7900A-4',
         99.00,
         'Casio',
@@ -622,3 +644,37 @@ VALUES
         'dive/300 meters/automatic ',
         'https://cdn2.jomashop.com/media/catalog/product/o/m/omega-diver-300m-automatic-chronometer-42-mm-blue-dial-mens-watch-21020422003002-21020422003002.jpg'
     );
+
+INSERT INTO
+    `watches`.`cart_items` (`customer_id`, `product_id`, `quantity`, `total`)
+VALUES
+    (
+        'e9fbc1e7-dae5-4063-85f6-d0768d35b48f',
+        '7b16e394-daaf-11ec-bc93-f7f5e59d600a',
+        '1',
+        '1'
+    );
+
+INSERT INTO
+    `watches`.`cart_items` (`customer_id`, `product_id`, `quantity`, `total`)
+VALUES
+    (
+        'e9fbc1e7-dae5-4063-85f6-d0768d35b48f',
+        '7b16e394-daaf-11ec-bc93-f7f5e59d600a',
+        '2',
+        '1'
+    );
+
+INSERT INTO
+    `watches`.`cart_items` (`customer_id`, `product_id`, `quantity`, `total`)
+VALUES
+    (
+        'e9fbc1e7-dae5-4063-85f6-d0768d35b48f',
+        '7b16e394-daaf-11ec-bc93-f7f5e59d600a',
+        '1',
+        '1'
+    );
+
+
+
+
