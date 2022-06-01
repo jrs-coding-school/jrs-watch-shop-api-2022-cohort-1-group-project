@@ -1,5 +1,74 @@
 const db = require('../index');
 
+exports.getItemsPurchasedByTransactionId = (req, res) => {
+
+    let tranId = req.params.transactionId;
+
+    const query = `
+        SELECT products.id, products.name, products.brand, products.color, 
+            products.image, transactions.total, purchased_items.quantity
+            FROM transactions 
+            
+            INNER JOIN purchased_items
+                ON purchased_items.transaction_id = transactions.id
+            INNER JOIN products
+                ON products.id = purchased_items.product_id
+                
+            WHERE transactions.id = ?;
+              
+    `;
+    const placeholders = [tranId];
+
+    db.query(query, placeholders, (err, results) => {
+        if (err) {
+            res.status(500)
+                .send({
+                    message: "There was an error getting transactions.",
+                    error: err
+                })
+        } else if (results.length == 0) {
+            res.status(404)
+                .send({
+                    message: "no transactions found"
+                })
+        } else {
+            res.send({
+                items: results
+            });
+        }
+    });
+}
+
+exports.getTransactionById = (req, res) => {
+
+    let tranId = req.params.transactionId;
+
+    const query = `
+        SELECT * FROM watches.transactions
+            WHERE id = ? ;       
+    `;
+    const placeholders = [tranId];
+
+    db.query(query, placeholders, (err, results) => {
+        if (err) {
+            res.status(500)
+                .send({
+                    message: "There was an error getting transaction.",
+                    error: err
+                })
+        } else if (results.length == 0) {
+            res.status(404)
+                .send({
+                    message: "no transactions found"
+                })
+        } else {
+            res.send({
+                transaction: results[0]
+            });
+        }
+    });
+}
+
 exports.getAllTransactionsByUserId = (req, res) => {
 
     let id = req.params.userId;
