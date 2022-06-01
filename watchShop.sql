@@ -10,7 +10,7 @@ CREATE TABLE `watches`.`products` (
     `color` VARCHAR(255) NOT NULL,
     `style` VARCHAR(255) NOT NULL,
     `description` VARCHAR(255) DEFAULT NULL,
-    `image` BLOB NULL,
+    `image` VARCHAR(255) NULL,
     `rating` FLOAT DEFAULT NULL,
     PRIMARY KEY (`id`)
 );
