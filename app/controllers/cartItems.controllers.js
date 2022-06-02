@@ -131,10 +131,19 @@ exports.decreaseQtyInCart = (req, res) => {
                         error: err
                     });
             } else {
+                console.log(results, results.affectedRows)
                 // check if rows affected == 0 -> 400 error 
-                res.send({
-                    message: "your item quantity was reduced successfully!"
-                });
+                if (results.affectedRows != 0) {
+                    res.status(200)
+                    .send({
+                        message: "your item was decreased successfully!"
+                    });
+                } else {
+                    res.status(400)
+                    .send({
+                        message: "item was not decreased"
+                    });
+                }
             }
         });
     }
@@ -173,10 +182,19 @@ exports.increaseQtyInCart = (req, res) => {
                         error: err
                     });
             } else {
+                console.log(results, results.affectedRows)
                 // check if rows affected == 0 -> 400 error 
-                res.send({
-                    message: "your item quantity was increased successfully!"
-                });
+                if (results.affectedRows != 0) {
+                    res.status(200)
+                    .send({
+                        message: "your item was increased successfully!"
+                    });
+                } else {
+                    res.status(400)
+                    .send({
+                        message: "item was not increased"
+                    });
+                }
             }
         });
     }
@@ -213,9 +231,17 @@ exports.deleteCartItem = (req, res) => {
             } else {
                 console.log(results, results.affectedRows)
                 // check if rows affected == 0 -> 400 error 
-                res.send({
-                    message: "your item was deleted successfully!"
-                });
+                if (results.affectedRows != 0) {
+                    res.status(200)
+                    .send({
+                        message: "your item was deleted successfully!"
+                    });
+                } else {
+                    res.status(400)
+                    .send({
+                        message: "item was not deleted"
+                    });
+                }
             }
         });
     }
