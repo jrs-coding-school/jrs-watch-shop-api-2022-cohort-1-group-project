@@ -2,9 +2,9 @@ const db = require('../index');
 
 exports.addItemToCart = (req, res) => {
 
-    let { id, customer_id, product_id, quantity, total } = req.body;
+    let { userId, itemId, itemPrice } = req.body;
 
-    if (!id || !customer_id || !product_id || !quantity || !total) {
+    if (!userId || !itemId || !itemPrice) {
         res.status(400)
             .send({
                 message: "id, customer_id, product_id, quantity, and total must be defined",
@@ -13,28 +13,56 @@ exports.addItemToCart = (req, res) => {
         return;
     }
 
+
+    if (!itemId || !userId || !itemPrice) {
+        res.status(400)
+            .send({
+                message: "user id and product id must be defined",
+                data: req.body
+            });
+        return;
+
+    }
+
     const query = `
-        INSERT INTO watches.cart_items (id, customer_id, product_id, quantity, total)
-            VALUES (?, ?, ?, ?, ?);
-    `;
-    const placeholders = [id, customer_id, product_id, quantity, total];
+            SELECT * FROM cart_items
+                WHERE customer_id = ?
+                AND product_id = ?;
+        `;
+    const placeholders = [userId, itemId];
 
     db.query(query, placeholders, (err, results) => {
-
         if (err) {
-            // case #3
-            res.status(500)
-                .send({
-                    message: "There was an error adding a product to your shopping cart.",
-                    error: err
-                });
-        } else {
-            // case # 1
-            res.send({
-                message: "your product was added to your shopping cart successfully!"
+            // send 500 
+        } else if (results.length == 0) {
+            // item not in cart yet
+
+            const query = `
+                INSERT INTO cart_items (customer_id, product_id, quantity, total)
+                    VALUES ( ?, ?, 1, ?);
+            `;
+            const placeholders = [userId, itemId, itemPrice];
+
+            db.query(query, placeholders, (err, results) => {
+
+                if (err) {
+                    res.status(500)
+                        .send({
+                            message: "There was an error adding a product to your shopping cart.",
+                            error: err
+                        });
+                } else {
+                    res.send({
+                        message: "your product was added to your shopping cart successfully!"
+                    });
+                }
             });
+        } else {
+            // item is in cart
+            // increase quantity in cart
+            this.increaseQtyInCart(req, res);
         }
-    });
+    })
 }
 
 exports.getUserShoppingCartById = (req, res) => {
