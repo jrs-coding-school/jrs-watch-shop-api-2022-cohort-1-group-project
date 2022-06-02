@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 require('./app/index');
+require('./app/routes/watches.routes')(app);
 require('./app/routes/users.routes')(app);
 require('./app/routes/transactions.routes')(app);
 require('./app/routes/cartItems.routes')(app);
