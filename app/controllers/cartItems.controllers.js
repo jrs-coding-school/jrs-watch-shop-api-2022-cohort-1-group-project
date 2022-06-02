@@ -40,7 +40,7 @@ exports.addItemToCart = (req, res) => {
 exports.getUserShoppingCartById = (req, res) => {
 
     let { customerId } = req.params;
-   
+
     const query = `
         SELECT product_id AS id, name, price, brand, color, style, description, image, cart_items.quantity
             FROM watches.cart_items 
@@ -51,7 +51,7 @@ exports.getUserShoppingCartById = (req, res) => {
     const placeholders = [customerId];
 
     db.query(query, placeholders, (err, results) => {
-        
+
         if (err) {
             res.status(500)
                 .send({
@@ -70,4 +70,127 @@ exports.getUserShoppingCartById = (req, res) => {
             });
         }
     });
+}
+
+exports.decreaseQtyInCart = (req, res) => {
+
+    let { itemId, userId } = req.body;
+
+    if (!itemId || !userId) {
+        res.status(400)
+            .send({
+                message: "user id and product id must be defined",
+                data: req.body
+            });
+        return;
+
+    } else {
+
+        const query = `
+            UPDATE watches.cart_items 
+                SET quantity = quantity - 1
+                WHERE  customer_id = ? 
+                    AND product_id = ?;
+        `;
+        const placeholders = [userId, itemId];
+
+        db.query(query, placeholders, (err, results) => {
+
+            if (err) {
+                res.status(500)
+                    .send({
+                        message: "There was an error decreasing item quantity.",
+                        error: err
+                    });
+            } else {
+                // check if rows affected == 0 -> 400 error 
+                res.send({
+                    message: "your item quantity was reduced successfully!"
+                });
+            }
+        });
+    }
+
+
+}
+
+exports.increaseQtyInCart = (req, res) => {
+
+    let { itemId, userId } = req.body;
+
+    if (!itemId || !userId) {
+        res.status(400)
+            .send({
+                message: "user id and product id must be defined",
+                data: req.body
+            });
+        return;
+
+    } else {
+
+        const query = `
+            UPDATE watches.cart_items 
+                SET quantity = quantity + 1
+                WHERE  customer_id = ? 
+                    AND product_id = ?;
+        `;
+        const placeholders = [userId, itemId];
+
+        db.query(query, placeholders, (err, results) => {
+
+            if (err) {
+                res.status(500)
+                    .send({
+                        message: "There was an error increasing item quantity.",
+                        error: err
+                    });
+            } else {
+                // check if rows affected == 0 -> 400 error 
+                res.send({
+                    message: "your item quantity was increased successfully!"
+                });
+            }
+        });
+    }
+}
+
+exports.deleteCartItem = (req, res) => {
+
+    let { userId, itemId } = req.params;
+
+    if (!userId || !itemId) {
+        res.status(400)
+            .send({
+                message: "user id and product id must be defined",
+                data: req.body
+            });
+        return;
+    } else {
+        const query = `
+            DELETE FROM cart_items 
+                WHERE customer_id = ? 
+                   AND product_id = ?;
+        `;
+
+        const placeholders = [userId, itemId];
+
+        db.query(query, placeholders, (err, results) => {
+
+            if (err) {
+                res.status(500)
+                    .send({
+                        message: "There was an error deleting item.",
+                        error: err
+                    });
+            } else {
+                console.log(results, results.affectedRows)
+                // check if rows affected == 0 -> 400 error 
+                res.send({
+                    message: "your item was deleted successfully!"
+                });
+            }
+        });
+    }
+
+
 }
