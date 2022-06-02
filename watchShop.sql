@@ -36,7 +36,9 @@ CREATE TABLE `watches`.`transactions` (
     `date` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `total` FLOAT NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`customer_id`) REFERENCES `users`(`id`) ON DELETE SET NULL
+    FOREIGN KEY (`customer_id`) REFERENCES `users`(`id`) ON DELETE
+    SET
+        NULL
 );
 
 CREATE TABLE `watches`.`purchased_items` (
@@ -653,27 +655,20 @@ VALUES
         '7b16e394-daaf-11ec-bc93-f7f5e59d600a',
         '1',
         '1'
-    );
-
-INSERT INTO
-    `watches`.`cart_items` (`customer_id`, `product_id`, `quantity`, `total`)
-VALUES
+    ),
     (
         'e9fbc1e7-dae5-4063-85f6-d0768d35b48f',
         '7b16e394-daaf-11ec-bc93-f7f5e59d600a',
         '2',
         '1'
-    );
-
-INSERT INTO
-    `watches`.`cart_items` (`customer_id`, `product_id`, `quantity`, `total`)
-VALUES
+    ),
     (
         'e9fbc1e7-dae5-4063-85f6-d0768d35b48f',
         '7b16e394-daaf-11ec-bc93-f7f5e59d600a',
         '1',
         '1'
     );
+
 INSERT INTO
     `watches`.`transactions` (`id`, `customer_id`, `total`)
 VALUES
@@ -684,7 +679,13 @@ VALUES
     );
 
 INSERT INTO
-    `watches`.`purchased_items` (`id`, `product_id`, `quantity`, `transaction_id`, `total`)
+    `watches`.`purchased_items` (
+        `id`,
+        `product_id`,
+        `quantity`,
+        `transaction_id`,
+        `total`
+    )
 VALUES
     (
         uuid(),
@@ -693,9 +694,3 @@ VALUES
         '2bc40e48-ddca-11ec-bc93-f7f5e59d600a',
         '100.00'
     );
-
-
-
-
-
-
