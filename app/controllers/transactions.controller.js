@@ -1,5 +1,5 @@
 const db = require('../index');
-const {v4: uuid} = require('uuid')
+const { v4: uuid } = require('uuid')
 
 exports.getItemsPurchasedByTransactionId = (req, res) => {
 
@@ -100,9 +100,16 @@ exports.getAllTransactionsByUserId = (req, res) => {
     });
 }
 
+/**
+ * Checkout
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.createTransaction = (req, res) => {
 
-    let { userId, total, products, quantity } = req.body;
+    let { userId, total, products } = req.body;
+
     // If the title, author, or coverImage was not defined -> ERROR
     if (!userId || !total || !products) {
         res.status(400)
@@ -111,9 +118,10 @@ exports.createTransaction = (req, res) => {
             });
         return;
     }
+
     const transactionId = uuid();
     const query = `
-            INSERT INTO watches.transactions (id, customer_id, total) 
+            INSERT INTO transactions (id, customer_id, total) 
             VALUES 
                 (?, ?, ?);
     `;
@@ -128,7 +136,9 @@ exports.createTransaction = (req, res) => {
                     error: err
                 });
         } else {
-            putItemsInDb(products, transactionId, res)
+            putItemsInDb(products, transactionId, res);
+            // also remove all items from cart
+            removeItemsFromUsersCart(userId);
         }
     });
 
@@ -149,7 +159,6 @@ function putItemsInDb(items, transactionId, res) {
     `;
     var placeholders = [];
 
-    console.log(query)
     // push values into placeholders
     for (let item of items) {
         placeholders.push(item.id, item.quantity, transactionId, item.price)
@@ -172,16 +181,30 @@ function putItemsInDb(items, transactionId, res) {
                     });
                 } else {
                     res.send({
-                        message:'transaction deleted'
+                        message: 'transaction deleted'
                     });
                 }
             });
 
         } else {
-            //      else -> SUCCESS
+            // SUCCESS
             res.send({
-                message: 'your purchase was successfull.'
+                message: 'your purchase was successfull.',
+                transactionId
             });
         }
+    });
+}
+
+function removeItemsFromUsersCart(userId) {
+
+    const query = `
+        DELETE FROM cart_items
+        WHERE customer_id = ?;
+    `;
+    const placeholders = [userId];
+
+    db.query(query, placeholders, (err, results) => {
+        return;
     });
 }
